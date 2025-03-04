@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}โปรไฟล์ของฉัน{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <img src="{{ user.profile_image.url }}" alt="Profile Picture">
+        </div>
+        <h2 class="profile-name">{{ user.username }}</h2>
+        <p class="profile-email">Email: {{ user.email }}</p>
+    </div>
+
+    <div class="profile-actions">
+        {% if user.is_superuser %}
+            <a href="{% url 'home' %}" class="dashboard-btn">ร้านค้า</a>
+        {% endif %}
+        <a href="{% url 'edit_profile' %}" class="edit-btn">แก้ไขโปรไฟล์</a>
+        <a href="{% url 'logout' %}" class="logout-btn">ออกจากระบบ</a>
+    </div>
+</div>
+{% endblock %}

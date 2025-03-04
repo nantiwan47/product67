@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+
+    <div class="product-detail-container">
+        <div class="product-image">
+            <img src="{{ product.image_url.url }}" alt="{{ product.name }}">
+        </div>
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <p>ขายไปแล้ว {{ sold_quantity }}</p>
+            <p class="description">รายละเอียดสินค้า: {{ product.description }}</p>
+            <p class="price">ราคา: {{ product.price }} บาท</p>
+            <p class="stock">จำนวนคงเหลือ: {{ product.stock }}</p>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message">
+                            {{ message }}
+                            <button class="close-btn">&times;</button> <!-- ปุ่มกดปิด -->
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- ฟอร์มเพิ่มสินค้าลงในตะกร้า -->
+            <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
+                {% csrf_token %}
+                <div class="quantity-control">
+                    <button type="button" id="decrease-btn" class="quantity-btn">-</button>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" readonly>
+                    <button type="button" id="increase-btn" class="quantity-btn">+</button>
+                </div>
+                <button type="submit" class="add-to-cart-btn">เพิ่มลงในตะกร้า</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // สำหรับเพิ่มหรือลดจำนวนสินค้า
+        document.getElementById("increase-btn").addEventListener("click", function() {
+            let quantityInput = document.getElementById("quantity");
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        });
+
+        document.getElementById("decrease-btn").addEventListener("click", function() {
+            let quantityInput = document.getElementById("quantity");
+            if (quantityInput.value > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        });
+
+         // เลือกปุ่มปิดและข้อความแจ้งเตือน
+        const closeButton = document.querySelector('.close-btn');
+        if (closeButton) { // ตรวจสอบว่ามีปุ่มปิดหรือไม่
+            closeButton.addEventListener('click', function() {
+                // หา element ข้อความที่อยู่ใกล้ที่สุดและซ่อนมัน
+                this.closest('.message').style.display = 'none';
+            });
+        }
+
+    </script>
+{% endblock %}

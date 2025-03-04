@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+    <div class="cart-container">
+        <!-- Product List Section -->
+        <div class="cart-items">
+            <h2>ตะกร้าสินค้าของฉัน</h2>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if cart_items %}
+                <div class="cart-table-container">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th class="cart-table-header">สินค้า</th>
+                                <th class="cart-table-header">จำนวน</th>
+                                <th class="cart-table-header">ราคา</th>
+                                <th class="cart-table-header">รวม</th>
+                                <th class="cart-table-header"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                                <tr class="cart-item-row">
+                                    <td>
+                                        <a href="{% url 'product_detail' pk=item.product.id %}" class="cart-item-link">
+                                            <img src="{{ item.product.image_url.url }}" alt="{{ item.product.name }}" class="cart-item-image">
+                                            <p class="cart-item-name">{{ item.product.name }}</p>
+                                        </a>
+                                    </td>
+
+                                    <td class="cart-item-quantity">
+                                        <form method="POST" action="{% url 'update_cart' pk=item.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" name="action" value="decrease" class="quantity-button">-</button>
+                                            <span class="quantity">{{ item.quantity }}</span>
+                                            <button type="submit" name="action" value="increase" class="quantity-button">+</button>
+                                        </form>
+                                    </td>
+                                    <td class="cart-item-price">฿{{ item.product.price }}</td>
+                                    <td class="cart-item-total">฿{{ item.total_item_price }}</td>
+                                    <td class="cart-item-remove">
+                                        <form method="POST" action="{% url 'delete_cart' pk=item.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="remove-button">ลบ</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-cart-message">
+                    <p>ตะกร้าของคุณว่างเปล่า!</p>
+                    <a href="{% url 'home' %}" class="shop-more-button">ไปช้อปปิ้งต่อ</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <h2 class="summary-title">สรุปคำสั่งซื้อ</h2>
+            <div class="summary-item">
+                <span>ราคารวมทั้งหมด:</span>
+                <span class="summary-total">฿{{ cart.get_total_price }}</span>
+            </div>
+            <a href="{% url 'checkout' %}" class="checkout-button">ชำระเงิน</a>
+        </div>
+    </div>
+{% endblock %}

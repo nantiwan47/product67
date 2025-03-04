@@ -1,0 +1,143 @@
+/* ตั้งค่าพื้นฐาน */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5; /* พื้นหลังสีเทาอ่อน */
+    color: #333333; /* ข้อความสีดำ */
+    margin: 0;
+    padding: 0;
+}
+
+/* ส่วนของประเภทสินค้า */
+.categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 30px;
+}
+
+.category {
+    background-color: #ffffff; /* พื้นหลังสีขาว */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 1200px;
+}
+
+/* หัวข้อประเภทและปุ่มดูเพิ่มเติม */
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 2px solid #e0e0e0; /* เส้นแบ่งสีเทาอ่อน */
+}
+
+.category-header h2 {
+    font-size: 2em;
+    color: #4a4a4a; /* สีเทาเข้ม */
+    margin: 0;
+    font-weight: bold;
+}
+
+.category-header a {
+    padding: 10px 20px;
+    background-color: #4a4a4a; /* สีเทาเข้ม */
+    color: #ffffff; /* ข้อความสีขาว */
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.category-header a:hover {
+    background-color: #ff5341; /* สีส้มเมื่อ hover */
+}
+
+/* ส่วนของสินค้า */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* แสดงแถวละ 5 รายการ */
+    gap: 20px;
+}
+
+.product-item {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column; /* จัดให้เนื้อหาอยู่ตรงกลางแนวนอน */
+}
+
+
+.product-item img {
+    width: 100%; /* ความกว้างเต็มกรอบ */
+    height: 130px; /* ความสูงคงที่ */
+    object-fit: contain; /* ปรับรูปให้พอดีกับกรอบโดยไม่ตัด */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 5px; /* เพิ่มระยะห่างภายในกรอบ */
+    display: flex;
+    justify-content: center; /* จัดให้รูปภาพอยู่ตรงกลางแนวนอน */
+    align-items: center; /* จัดให้รูปภาพอยู่ตรงกลางแนวตั้ง */
+}
+.product-item h3 {
+    text-align: center;
+    font-size: 1.2em;
+    color: #4a4a4a; /* สีเทาเข้ม */
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.product-item p {
+    font-size: 0.9em;
+    color: #666666; /* ข้อความสีเทา */
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.product-item .price {
+    text-align: center;
+    font-weight: bold;
+    color: #ff6f61; /* สีส้มสำหรับราคา */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-list {
+        grid-template-columns: repeat(2, 1fr); /* แสดงแถวละ 2 รายการบนมือถือ */
+    }
+
+    .product-item img {
+        height: 100px; /* ปรับความสูงรูปภาพบนมือถือ */
+    }
+}
+
+/* ปุ่มเพิ่มลงในตะกร้า */
+.add-to-cart-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #ffffff; /* สีพื้นหลังขาว */
+    color: #ff6f61; /* ข้อความสีส้มอ่อน */
+    border: 1px solid #ff6f61; /* กรอบสีส้มอ่อน */
+    border-radius: 5px; /* มุมโค้ง */
+    font-size: 16px;
+    font-weight: normal; /* ตัวหนังสือไม่หนา */
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* เอฟเฟกต์เมื่อ hover */
+.add-to-cart-btn:hover {
+    background-color: #fff0f0; /* สีพื้นหลังอ่อนเมื่อ hover */
+    color: #ff3b30; /* ข้อความสีแดงเมื่อ hover */
+    border-color: #ff3b30; /* กรอบสีแดงเมื่อ hover */
+}
+
+/* เอฟเฟกต์เมื่อคลิก */
+.add-to-cart-btn:active {
+    transform: scale(0.95); /* ย่อปุ่มเล็กน้อยเมื่อคลิก */
+}

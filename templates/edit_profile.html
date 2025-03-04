@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}แก้ไขโปรไฟล์{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+
+<div class="edit-profile-container">
+    <div class="edit-profile-card">
+        <h2>แก้ไขโปรไฟล์</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="profile-avatar">
+                <img id="avatarPreview" src="{{ user.profile_image.url }}" alt="Profile Picture">
+            </div>
+            
+            <div class="input-group">
+                <label>เปลี่ยนรูปโปรไฟล์:</label>
+                <input type="file" name="profile_image" id="profileImageInput" accept="image/*">
+            </div>
+
+            <div class="input-group">
+                <label>ชื่อ:</label>
+                <input type="text" name="username" value="{{ user.username }}" required>
+            </div>
+
+            <div class="input-group">
+                <label>อีเมล:</label>
+                <input type="email" name="email" value="{{ user.email }}" required>
+            </div>
+
+            <button type="submit" class="save-btn">บันทึก</button>
+            <a href="{% url 'profile' %}" class="cancel-btn">ยกเลิก</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

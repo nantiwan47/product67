@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/search_results.css' %}">
+<div class="search-results">
+    <form method="GET" action="{% url 'search_results' %}" class="search-form-results">
+        <input type="hidden" name="query" value="{{ query }}">
+
+        <select name="category">
+            <option value="">เลือกหมวดหมู่</option>
+            {% for cat_key, cat_label in categories %}
+                <option value="{{ cat_key }}" {% if cat_key == category %}selected{% endif %}>
+                    {{ cat_label }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="number" name="min_price" placeholder="ราคาต่ำสุด" value="{{ min_price }}">
+        <input type="number" name="max_price" placeholder="ราคาสูงสุด" value="{{ max_price }}">
+
+        <button type="submit">ค้นหา</button>
+        <a class="reset-btn" href="{% url 'search_results' %}">รีเซ็ต</a>
+    </form>
+
+    <h2>ผลลัพธ์การค้นหา</h2>
+
+    <div class="products">
+        {% if page_obj %}
+            <div class="product-list">
+                {% for product in page_obj %}
+                    <div class="product-item">
+                        <a href="{% url 'product_detail' product.id %}" style="text-decoration: none;">
+                            <img src="{{ product.image_url.url }}" alt="{{ product.name }}">
+                            <h3>{{ product.name }}</h3>
+                        </a>
+                        <p>{{ product.description|truncatewords:20 }}</p>
+                        <p class="price">ราคา: {{ product.price }} บาท</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">เพิ่มลงในตะกร้า</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>ไม่พบสินค้าที่ตรงกับเงื่อนไขการค้นหา</p>
+        {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?query={{ query }}&category={{ category }}&min_price={{ min_price }}&max_price={{ max_price }}&page=1">&laquo; First</a>
+                <a href="?query={{ query }}&category={{ category }}&min_price={{ min_price }}&max_price={{ max_price }}&page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?query={{ query }}&category={{ category }}&min_price={{ min_price }}&max_price={{ max_price }}&page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?query={{ query }}&category={{ category }}&min_price={{ min_price }}&max_price={{ max_price }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+</div>
+
+{% endblock %}

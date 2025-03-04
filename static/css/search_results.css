@@ -1,0 +1,181 @@
+/* กำหนดความกว้างของฟอร์มและผลลัพธ์ */
+.search-results {
+    width: 80%;
+    margin: 30px auto 0 auto;/* ให้ฟอร์มอยู่ตรงกลาง */
+}
+
+.search-form-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.search-form-results select,
+.search-form-results input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 150px;
+}
+
+.search-form-results button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-form-results button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.search-form-results .reset-btn {
+    display: inline-block;
+    padding: 6px 15px;
+    margin-left: 10px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.search-form-results .reset-btn:hover {
+    background-color: #a71d2a;
+}
+
+.search-form-results .reset-btn:active {
+    background-color: #d10000;
+}
+
+
+
+/* ส่วนของสินค้า */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* แสดงแถวละ 5 รายการ */
+    gap: 20px;
+}
+
+.product-item {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column; /* จัดให้เนื้อหาอยู่ตรงกลางแนวนอน */
+}
+
+
+.product-item img {
+    width: 100%; /* ความกว้างเต็มกรอบ */
+    height: 130px; /* ความสูงคงที่ */
+    object-fit: contain; /* ปรับรูปให้พอดีกับกรอบโดยไม่ตัด */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 5px; /* เพิ่มระยะห่างภายในกรอบ */
+    display: flex;
+    justify-content: center; /* จัดให้รูปภาพอยู่ตรงกลางแนวนอน */
+    align-items: center; /* จัดให้รูปภาพอยู่ตรงกลางแนวตั้ง */
+}
+.product-item h3 {
+    text-align: center;
+    font-size: 1.2em;
+    color: #4a4a4a; /* สีเทาเข้ม */
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.product-item p {
+    font-size: 0.9em;
+    color: #666666; /* ข้อความสีเทา */
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.product-item .price {
+    text-align: center;
+    font-weight: bold;
+    color: #ff6f61; /* สีส้มสำหรับราคา */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-list {
+        grid-template-columns: repeat(2, 1fr); /* แสดงแถวละ 2 รายการบนมือถือ */
+    }
+
+    .product-item img {
+        height: 100px; /* ปรับความสูงรูปภาพบนมือถือ */
+    }
+}
+
+/* ปุ่มเพิ่มลงในตะกร้า */
+.add-to-cart-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #ffffff; /* สีพื้นหลังขาว */
+    color: #ff6f61; /* ข้อความสีส้มอ่อน */
+    border: 1px solid #ff6f61; /* กรอบสีส้มอ่อน */
+    border-radius: 5px; /* มุมโค้ง */
+    font-size: 16px;
+    font-weight: normal; /* ตัวหนังสือไม่หนา */
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* เอฟเฟกต์เมื่อ hover */
+.add-to-cart-btn:hover {
+    background-color: #fff0f0; /* สีพื้นหลังอ่อนเมื่อ hover */
+    color: #ff3b30; /* ข้อความสีแดงเมื่อ hover */
+    border-color: #ff3b30; /* กรอบสีแดงเมื่อ hover */
+}
+
+/* เอฟเฟกต์เมื่อคลิก */
+.add-to-cart-btn:active {
+    transform: scale(0.95); /* ย่อปุ่มเล็กน้อยเมื่อคลิก */
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+.pagination .current {
+    font-weight: bold;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f0f0f0;
+}

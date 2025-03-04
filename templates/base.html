@@ -1,0 +1,61 @@
+{% load static %}
+{% load cart_tags %}
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-Commerce{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}" class="logo">ร้านขายของชำ</a>
+
+        <form method="GET" action="{% url 'search_results' %}" class="search-form">
+            <input type="hidden" name="category" value="{{ request.GET.category }}">
+            <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+            <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+            <input
+                type="text"
+                name="query"
+                value="{{ request.GET.query }}"
+                placeholder="ค้นหาสินค้า"
+                class="search-input"
+            />
+            <button type="submit" class="search-button">
+                ค้นหา
+            </button>
+        </form>
+
+        {% if user.is_authenticated %}
+            <div class="user-menu">
+                {% with user|cart_count as cart_total_items %}
+                    <a href="{% url 'cart' %}" class="cart-btn">
+                        🛒 ตะกร้า {% if cart_total_items > 0 %}({{ cart_total_items }}){% endif %}</a>
+                {% endwith %}
+                <div class="dropdown-container">
+                    <span class="user-name" id="userDropdown">{{ user.username }} ▼</span>
+                    <ul class="dropdown" id="dropdownMenu">
+                        <li><a href="{% url 'profile' %}">โปรไฟล์ของฉัน</a></li>
+                        <li><a href="{% url 'order_status' %}">คำสั่งซื้อของฉัน</a></li>
+                        <li><a href="{% url 'logout' %}#">ออกจากระบบ</a></li>
+                    </ul>
+                </div>
+            </div>
+        {% else %}
+            <div class="auth-links">
+                <a href="{% url 'login' %}" class="btn">เข้าสู่ระบบ</a>
+                <a href="{% url 'register' %}" class="btn primary">สมัครสมาชิก</a>
+            </div>
+        {% endif %}
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

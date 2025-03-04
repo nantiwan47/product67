@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}หน้าหลัก{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <div class="categories">
+        {% for category, data in category_products.items %}
+            <div class="category">
+                <div class="category-header">
+                    <h2>{{ data.label }}</h2>  {# แสดงชื่อหมวดหมู่ #}
+                    <a href="{% url 'search_results' %}?category={{ category }}">ดูสินค้าเพิ่มเติม</a>
+                </div>
+                <div class="product-list">
+                    {% for product in data.products %}
+                        <div class="product-item">
+                            <a href="{% url 'product_detail' product.id %}" style="text-decoration: none;">
+                                <img src="{{ product.image_url.url }}" alt="{{ product.name }}">
+                                <h3>{{ product.name }}</h3>
+                            </a>
+                            <p>{{ product.description|truncatewords:20 }}</p>
+                            <p class="price">ราคา: {{ product.price }} บาท</p>
+                            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">เพิ่มลงในตะกร้า</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

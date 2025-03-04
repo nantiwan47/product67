@@ -1,0 +1,137 @@
+/* Container สำหรับรายละเอียดสินค้า */
+.product-detail-container {
+    display: flex;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* รูปภาพสินค้า */
+.product-image img {
+    border-radius: 10px;
+    width: 100%; /* ความกว้างเต็มกรอบ */
+    height: 300px; /* ความสูงคงที่ */
+    object-fit: contain; /* ปรับรูปให้พอดีกับกรอบโดยไม่ตัด */
+}
+
+/* ข้อมูลสินค้า */
+.product-info {
+    flex: 1;
+}
+
+.product-info h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.product-info .description {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.product-info .price {
+    font-size: 1.5rem;
+    color: #e74c3c;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+.product-info .stock {
+    font-size: 1rem;
+    color: #888;
+}
+
+.messages {
+    margin: 1rem 0;
+}
+
+.message {
+    position: relative;
+    padding: 0.75rem 2rem 0.75rem 1rem;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.close-btn {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #721c24;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+/* ฟอร์มเพิ่มสินค้าลงในตะกร้า */
+.add-to-cart-form {
+    margin-top: 2rem;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.quantity-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.quantity-btn:hover {
+    background-color: #ddd;
+}
+
+#quantity {
+    width: 60px;
+    text-align: center;
+    margin: 0 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* ปุ่มเพิ่มลงในตะกร้า */
+.add-to-cart-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #ffffff; /* สีพื้นหลังขาว */
+    color: #ff6f61; /* ข้อความสีส้มอ่อน */
+    border: 1px solid #ff6f61; /* กรอบสีส้มอ่อน */
+    border-radius: 5px; /* มุมโค้ง */
+    font-size: 16px;
+    font-weight: normal; /* ตัวหนังสือไม่หนา */
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* เอฟเฟกต์เมื่อ hover */
+.add-to-cart-btn:hover {
+    background-color: #fff0f0; /* สีพื้นหลังอ่อนเมื่อ hover */
+    color: #ff3b30; /* ข้อความสีแดงเมื่อ hover */
+    border-color: #ff3b30; /* กรอบสีแดงเมื่อ hover */
+}

@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/registration.css' %}">
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <h2>สมัครสมาชิก</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="ชื่อผู้ใช้" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="อีเมล" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password1" placeholder="รหัสผ่าน" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password2" placeholder="ยืนยันรหัสผ่าน" required>
+                </div>
+                <button type="submit" class="register-btn">สมัครสมาชิก</button>
+            </form>
+
+            <!-- ✅ ปุ่มกลับไปหน้า Login -->
+            <div class="login-link">
+                <p>มีบัญชีแล้ว? <a href="{% url 'login' %}" class="login-btn">เข้าสู่ระบบ</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

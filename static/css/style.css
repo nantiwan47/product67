@@ -1,0 +1,209 @@
+/* ตั้งค่าทั่วไป */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5; /* พื้นหลังสีเทาอ่อน */
+    color: #333;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between; /* กระจายเนื้อหาไปทางซ้ายและขวา */
+    align-items: center;
+    padding: 15px 20px;
+    background: #353333; /* สีเทาเข้ม */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* โลโก้ */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.search-form {
+    position: relative;
+    max-width: 400px; /* ปรับความกว้างตามต้องการ */
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    background-color: white; /* พื้นหลังสีขาว */
+    padding: 10px 15px; /* ปรับ padding เพื่อไม่ให้ข้อความทับไอคอน */
+    font-size: 14px;
+    color: #000000; /* เปลี่ยนสีตัวอักษรเป็นสีดำ */
+    border: none;
+    border-radius: 25px; /* ทำให้ช่องค้นหาเป็นวงรี */
+    transition: background-color 0.3s ease;
+}
+
+.search-input:focus {
+    outline: 2px solid white; /* กรอบสีขาว */
+    outline-offset: 2px; /* ระยะห่างของกรอบจากช่องค้นหา */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* เงาเพิ่มเติม (optional) */
+    background-color: white; /* เปลี่ยนสีพื้นหลังเมื่อโฟกัส */
+}
+
+/* ตกแต่งปุ่มค้นหา */
+.search-button {
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff0000;
+}
+
+/* เมนูผู้ใช้ */
+.user-menu {
+    display: flex;
+    align-items: center;
+}
+
+.cart-btn {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #2c3e50; /* สีเทาเข้ม */
+    transition: 0.3s;
+}
+
+.cart-btn:hover {
+    background: #e0e0e0; /* สีเทาอ่อนเมื่อ hover */
+}
+
+
+/* Dropdown */
+.dropdown-container {
+    position: relative;
+    margin-left: 15px;
+}
+
+/* ตั้งค่า user name ที่จะคลิกเพื่อแสดง dropdown */
+.user-name {
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.user-name:hover {
+    color: #f0f0f0;
+}
+
+/* ตั้งค่าการแสดง dropdown */
+.dropdown {
+    position: absolute;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    list-style: none;
+    padding: 10px 0;
+    display: none;
+    min-width: 180px;
+    top: 100%;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+/* แสดง dropdown เมื่อมี class 'show' */
+.dropdown.show {
+    display: block;
+    opacity: 1;
+}
+
+/* รายการภายใน dropdown */
+.dropdown li {
+    padding: 8px 20px;
+}
+
+/* ลิงก์ในรายการ dropdown */
+.dropdown li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+/* เปลี่ยนสีพื้นหลังเมื่อ hover บนลิงก์ */
+.dropdown li a:hover {
+    color: #ff5341;
+}
+
+
+
+/* ปุ่มเข้าสู่ระบบ & สมัครสมาชิก */
+.auth-links .btn {
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.auth-links .btn.primary {
+    background: white;
+    color: #2c3e50; /* สีเทาเข้ม */
+    border: 2px solid #ffffff;
+}
+
+.auth-links .btn.primary:hover {
+    background: #ff5341; /* สีเทาเข้มเมื่อ hover */
+    color: white;
+}
+
+.auth-links .btn {
+    color: white;
+    border: 2px solid white;
+    transition: 0.3s;
+}
+
+.auth-links .btn:hover {
+    background: white;
+    color: #2c3e50; /* สีเทาเข้มเมื่อ hover */
+}
+
+
+/* ✅ กล่อง Login */
+.login-container {
+    width: 350px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* ✅ หัวข้อใน Login */
+.login-container h1 {
+    color: #2c3e50; /* สีเทาเข้ม */
+    margin-bottom: 15px;
+}
+
+/* ✅ แจ้งเตือน */
+.messages {
+    margin-bottom: 10px;
+}
+
+.error-message {
+    color: #e74c3c; /* สีแดง */
+    font-size: 14px;
+    background: #ffe6e6;
+    padding: 8px;
+    border-radius: 5px;
+}

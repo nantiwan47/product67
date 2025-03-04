@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}เช็คเอาท์{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/check.css' %}">
+
+<div class="checkout-container">
+    <h1 class="checkout-title">เช็คเอาท์</h1>
+
+    {% if cart_items %}
+    <form action="{% url 'checkout' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- ตารางสินค้า -->
+        <table class="checkout-table">
+            <thead>
+                <tr>
+                    <th>สินค้า</th>
+                    <th>จำนวน</th>
+                    <th>ราคา</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product.price }} บาท</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3 class="total-price">💰 ราคารวม: {{ total_price }} บาท</h3>
+
+        <!-- เลือกวันและเวลารับสินค้า -->
+        <div class="form-group">
+            <label for="pickup_time">📅 เลือกวันและเวลารับสินค้า:</label>
+            <input type="datetime-local" name="pickup_time" id="pickup_time" required>
+        </div>
+
+        <!-- เลือกวิธีชำระเงิน -->
+        <div class="form-group">
+            <label>💳 เลือกช่องทางชำระเงิน:</label>
+            <div class="payment-options">
+                <label class="payment-label">
+                    <input type="radio" name="payment_method" value="cash" required>
+                    💵 จ่ายเงินสดตอนรับสินค้า
+                </label>
+
+                <label class="payment-label">
+                    <input type="radio" name="payment_method" value="transfer" required>
+                    🏦 โอนเงิน
+                </label>
+            </div>
+        </div>
+        <!-- อัพโหลดสลิป (ถ้าเลือกโอนเงิน) -->
+        <div class="form-group slip-upload" id="slipUpload" style="display: none;">
+            <label for="slip_image">📄 อัปโหลดสลิปโอนเงิน:</label>
+            <input type="file" name="slip_image" id="slip_image">
+        </div>
+        <div class="button-container">
+        <button type="submit" class="btn btn-success">ยืนยันคำสั่งซื้อ</button>
+    </div>
+
+    </form>
+    {% else %}
+    <p class="empty-cart">ตะกร้าของคุณว่างเปล่า</p>
+    {% endif %}
+
+    <div class="button-container">
+        <a href="{% url 'home' %}" class="btn btn-primary">🔙 กลับไปเลือกสินค้า</a>
+    </div>
+
+</div>
+
+<script>
+    // แสดงช่องอัปโหลดสลิปถ้าเลือกโอนเงิน
+    document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            document.getElementById('slipUpload').style.display = this.value === 'transfer' ? 'block' : 'none';
+        });
+    });
+</script>
+
+{% endblock %}
