@@ -1,0 +1,76 @@
+/* สไตล์หลักของตารางสินค้า */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+table th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tr:hover {
+  background-color: #e9ecef;
+}
+
+table img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+table a {
+  color: #3498db;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background-color: #ecf0f1;
+  transition: background-color 0.3s ease;
+}
+
+table a:hover {
+  background-color: #bdc3c7;
+}
+
+/* ปุ่มเพิ่มสินค้า */
+.add-product-button {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #2ecc71; /* สีเขียว */
+  color: white;
+  border-radius: 25px;
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none; /* ลบขีดเส้นใต้ */
+  transition: background-color 0.3s ease-in-out;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  margin-top: 20px; /* เพิ่มระยะห่างด้านบน */
+}
+
+.add-product-button:hover {
+  background-color: #27ae60; /* สีเขียวเข้มเมื่อ hover */
+}
+
+.add-product-button:focus {
+  outline: none; /* ลบเส้นขอบเมื่อลูกศรหรือฟังก์ชัน focus */
+}
+
+.add-product-button:active {
+  transform: scale(0.98); /* ลดขนาดเล็กน้อยเมื่อคลิก */
+}

@@ -377,10 +377,14 @@ def admin_dashboard(request):
                       category_counts]
     category_quantities = [item['count'] for item in category_counts]
 
+    last_two_category_names = category_names[-2:]
+
+    last_two_category_quantities = category_quantities[-2:]
+
     # สร้างกราฟแสดงจำนวนสินค้าตามหมวดหมู่
     category_graph = go.Figure(data=[go.Bar(
-        x=category_names,  # ชื่อหมวดหมู่ทั้งหมดที่ดึงจากฐานข้อมูล
-        y=category_quantities,  # จำนวนสินค้าในหมวดหมู่ต่างๆ
+        x=last_two_category_names,  # ชื่อหมวดหมู่ทั้งหมดที่ดึงจากฐานข้อมูล
+        y=last_two_category_quantities,  # จำนวนสินค้าในหมวดหมู่ต่างๆ
         name='สินค้าตามหมวดหมู่',
         marker=dict(color='orange')
     )])
@@ -411,13 +415,32 @@ def product_list(request):
     products = Product.objects.all()  # ดึงสินค้าทั้งหมดจากฐานข้อมูล
     return render(request, 'admin/product_list.html', {'products': products})
 
-def add_product(request):
+def product_add(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('product_list')  # เปลี่ยนเป็นชื่อ url ที่ต้องการ
+            return redirect('product_list')
     else:
         form = ProductForm()
 
-    return render(request, 'admin/add_product.html', {'form': form})
+    return render(request, 'admin/product_form.html', {'form': form})
+
+def product_edit(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "อัปเดตสินค้าสำเร็จ!")
+            return redirect('product_list')
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'admin/product_form.html', {'form': form})
+
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        product.delete()
+        return redirect('product_list')
+    return render(request, 'admin/product_confirm_delete.html', {'product': product})

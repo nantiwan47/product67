@@ -1,0 +1,38 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/product_list.css' %}">
+
+{% block content %}
+  <h1>รายการสินค้า</h1>
+    <a href="{% url 'product_add' %}" class="add-product-button">เพิ่มสินค้าใหม่</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>รูปภาพ</th>
+        <th>ชื่อสินค้า</th>
+        <th>รายละเอียด</th>
+        <th>การจัดการ</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <td>
+            {% if product.image_url %}
+              <img src="{{ product.image_url.url }}" alt="{{ product.name }}">
+            {% else %}
+              <p>ไม่มีรูปภาพ</p>
+            {% endif %}
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>
+            <a href="{% url 'product_edit' product.pk %}">แก้ไข</a> |
+            <a href="{% url 'product_delete' product.pk %}">ลบ</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
