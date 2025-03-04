@@ -1,12 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Sum
+from django.db.models import Sum, Count
+from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from .models import Product, Cart, CartItem, OrderItem, Order
-from .forms import RegisterForm
+from .forms import RegisterForm, ProductForm
+import plotly.graph_objects as go
 
 
 def register(request):
@@ -54,6 +56,26 @@ def edit_profile(request):
         return redirect("profile")
 
     return render(request, "edit_profile.html")
+
+def admin_login(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+        if user and (user.is_superuser or getattr(user, "role", "") == "admin"):
+            login(request, user)
+            messages.success(request, "เข้าสู่ระบบสำเร็จ!")
+            return redirect("admin_dashboard")
+        else:
+            messages.error(request, "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
+
+    return render(request, "registration/admin-login.html")
+
+@login_required
+def admin_logout(request):
+    logout(request)
+    return redirect("admin_login")
 
 
 
@@ -269,3 +291,133 @@ def order_status_view(request):
         orders = []
 
     return render(request, "order_status.html", {"orders": orders})
+
+
+
+def admin_dashboard(request):
+    # คำนวณยอดขายรวม
+    total_sales = Order.objects.filter(status='completed').aggregate(Sum('total_price'))['total_price__sum'] or 0
+    # คำนวณจำนวนคำสั่งซื้อที่รอดำเนินการ
+    pending_orders = Order.objects.filter(status='preparing').count()
+    # คำนวณจำนวนลูกค้า
+    total_customers = Order.objects.values('user').distinct().count()
+    # ดึงสินค้าที่เหลือน้อยกว่า 15 ชิ้น
+    low_stock_products = Product.objects.filter(stock__lt=15)
+    low_stock_count = low_stock_products.count()  # จำนวนสินค้าที่ใกล้หมด
+
+
+    # สินค้าขายดี 10 อันดับแรก
+    top_products = OrderItem.objects.filter(order__status='completed')\
+                    .values('product__name')\
+                    .annotate(total_sold=Sum('quantity'))\
+                    .order_by('-total_sold')[:10]
+    product_names = [item['product__name'] for item in top_products]
+    product_sold = [item['total_sold'] for item in top_products]
+    top_products_graph = go.Figure(data=[go.Bar(
+        x=product_names,
+        y=product_sold,
+        marker=dict(color='blue')
+    )])
+
+
+    # หมวดหมู่สินค้าที่ขายดีที่สุด
+    top_categories = OrderItem.objects.filter(order__status='completed') \
+                         .values('product__category') \
+                         .annotate(total_sold=Sum('quantity')) \
+                         .order_by('-total_sold')[:10]
+    category_names = [item['product__category'] for item in top_categories]
+    category_sold = [item['total_sold'] for item in top_categories]
+    top_categories_graph = go.Figure(data=[go.Bar(
+        x=category_names,
+        y=category_sold,
+        marker=dict(color='red')
+    )])
+
+    # วิธีการชำระเงินที่ผู้ใช้ใช้บ่อยที่สุด
+    payment_methods = Order.objects.exclude(payment_method=None) \
+        .values('payment_method') \
+        .annotate(count=Count('payment_method')) \
+        .order_by('-count')
+
+    # ตรวจสอบว่าไม่ใช่ค่าที่ว่างเปล่า
+    if payment_methods.exists():
+        payment_names = [item['payment_method'] for item in payment_methods]
+        payment_counts = [item['count'] for item in payment_methods]
+
+        payment_graph = go.Figure(data=[go.Pie(labels=payment_names, values=payment_counts)])
+        payment_graph.update_layout(title='วิธีการชำระเงินที่ใช้บ่อยที่สุด')
+
+        payment_graph_html = payment_graph.to_html(full_html=False)
+    else:
+        payment_graph_html = "<p>ไม่มีข้อมูลการชำระเงิน</p>"
+
+    top_customers = Order.objects.filter(status='completed') \
+                        .values('user__username') \
+                        .annotate(total_spent=Sum('total_price')) \
+                        .order_by('-total_spent')[:10]
+
+    customer_names = [item['user__username'] for item in top_customers]
+    customer_spending = [item['total_spent'] for item in top_customers]
+
+    top_customers_graph = go.Figure(data=[go.Bar(
+        x=customer_names, y=customer_spending,
+        name='ลูกค้า', marker=dict(color='purple')
+    )])
+    top_customers_graph.update_layout(
+        title='ผู้ใช้ที่มียอดสั่งซื้อรวมสูงที่สุด 10 อันดับแรก', xaxis_title='ลูกค้า', yaxis_title='ยอดสั่งซื้อ (บาท)',
+        template='plotly'
+    )
+
+    # ดึงข้อมูลหมวดหมู่ทั้งหมดจาก Product และนับจำนวนสินค้าที่อยู่ในหมวดหมู่นั้นๆ
+    category_counts = Product.objects.values('category') \
+        .annotate(count=Count('id'))  # นับจำนวนสินค้าในแต่ละหมวดหมู่
+
+    # แปลงข้อมูลให้อยู่ในรูปของชื่อหมวดหมู่และจำนวนสินค้า
+    category_names = [dict(Product.CATEGORY_CHOICES).get(item['category'], item['category']) for item in
+                      category_counts]
+    category_quantities = [item['count'] for item in category_counts]
+
+    # สร้างกราฟแสดงจำนวนสินค้าตามหมวดหมู่
+    category_graph = go.Figure(data=[go.Bar(
+        x=category_names,  # ชื่อหมวดหมู่ทั้งหมดที่ดึงจากฐานข้อมูล
+        y=category_quantities,  # จำนวนสินค้าในหมวดหมู่ต่างๆ
+        name='สินค้าตามหมวดหมู่',
+        marker=dict(color='orange')
+    )])
+
+    category_graph.update_layout(
+        title='จำนวนสินค้าตามหมวดหมู่',
+        xaxis_title='หมวดหมู่สินค้า',
+        yaxis_title='จำนวนสินค้า',
+        template='plotly',
+        xaxis=dict(tickangle=45)  # หมุนแกน X เพื่อให้ชื่อหมวดหมู่แสดงได้ชัดเจน
+    )
+
+
+    # ส่งข้อมูลไปยัง template
+    return render(request, 'admin/dashboard.html', {
+        'total_sales': total_sales,
+        'pending_orders': pending_orders,
+        'total_customers': total_customers,
+        'top_products_graph': top_products_graph.to_html(full_html=False),
+        'category_graph': category_graph.to_html(full_html=False),  # ส่งกราฟจำนวนสินค้าตามหมวดหมู่
+        'top_categories_graph': top_categories_graph.to_html(full_html=False),
+        'payment_graph': payment_graph_html,
+        'low_stock_count': low_stock_count,  # ส่งจำนวนสินค้าใกล้หมด
+        'top_customers_graph': top_customers_graph.to_html(full_html=False)
+    })
+
+def product_list(request):
+    products = Product.objects.all()  # ดึงสินค้าทั้งหมดจากฐานข้อมูล
+    return render(request, 'admin/product_list.html', {'products': products})
+
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('product_list')  # เปลี่ยนเป็นชื่อ url ที่ต้องการ
+    else:
+        form = ProductForm()
+
+    return render(request, 'admin/add_product.html', {'form': form})

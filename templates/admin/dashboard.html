@@ -1,0 +1,49 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
+
+{% block content %}
+  <div class="dashboard-container">
+    <h1>Dashboard</h1>
+
+    <div class="dashboard-info">
+      <div class="info-item">
+        <p><strong>ยอดขายรวม:</strong> {{ total_sales|floatformat:2 }} บาท</p>
+      </div>
+      <div class="info-item">
+        <p><strong>คำสั่งซื้อที่รอดำเนินการ:</strong> {{ pending_orders }}</p>
+      </div>
+      <div class="info-item">
+        <p><strong>จำนวนลูกค้าที่ทำการสั่งซื้อสินค้า:</strong> {{ total_customers }}</p>
+      </div>
+    </div>
+
+    <div class="dashboard-graphs">
+
+        {% if low_stock_count > 0 %}
+  <div class="alert-warning">
+    ⚠️ <strong>มี {{ low_stock_count }} รายการที่ใกล้หมดสต็อก! กรุณาเติมสินค้าเพื่อป้องกันการขาดสต็อก</strong>
+  </div>
+{% endif %}
+
+
+      <h2>ยอดขายรายเดือน</h2>
+      <div>{{ monthly_sales_graph|safe }}</div>
+
+      <h2>สินค้าขายดี 10 อันดับแรก</h2>
+      <div>{{ top_products_graph|safe }}</div>
+
+      <h2>หมวดหมู่สินค้าที่มียอดสั่งซื้อมากที่สุด</h2>
+      <div>{{ top_categories_graph|safe }}</div>
+
+      <h2>จำนวนสินค้าตามหมวดหมู่ที่มีอยู่ในระบบ</h2>
+      <div>{{ category_graph|safe }}</div>
+
+      <h2>วิธีการชำระเงินที่ใช้บ่อยที่สุด</h2>
+      <div>{{ payment_graph|safe }}</div>
+
+      <h2>ผู้ใช้ที่มียอดสั่งซื้อรวมสูงที่สุด 10 อันดับแรก</h2>
+      <div>{{ top_customers_graph|safe }}</div>
+    </div>
+  </div>
+{% endblock %}>

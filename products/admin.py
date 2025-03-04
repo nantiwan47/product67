@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Product, Cart, CartItem
+from .models import User, Product, Cart, CartItem, Order, OrderItem
 
 from django.contrib.auth.admin import UserAdmin
 
@@ -37,3 +37,6 @@ class CartItemAdmin(admin.ModelAdmin):
     ordering = ('cart', 'product')
 
 admin.site.register(CartItem, CartItemAdmin)
+
+admin.site.register(Order)
+admin.site.register(OrderItem)

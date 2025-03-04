@@ -1,0 +1,59 @@
+.dashboard-container {
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-info {
+  text-align: center; /* ทำให้ข้อมูลทั้งหมดใน .dashboard-info อยู่กลาง */
+  margin: 0 auto; /* ทำให้ .dashboard-info อยู่กลาง */
+  width: fit-content; /* ทำให้ .dashboard-info มีขนาดพอดีกับเนื้อหา */
+}
+
+.alert-warning {
+    background-color: #ffcc00;
+    color: #b30000;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
+.info-item {
+  display: inline-block;  /* ทำให้กรอบมีขนาดพอดีกับเนื้อหา */
+  border: 2px solid #ddd;  /* เพิ่มกรอบให้แต่ละบรรทัด */
+  border-radius: 10px;
+  padding: 10px 20px;  /* เพิ่มระยะห่างภายในกรอบ */
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;  /* เพิ่มระยะห่างระหว่างแต่ละบรรทัด */
+}
+
+.dashboard-info p {
+  font-size: 16px;
+  margin: 0;
+  color: #333;
+}
+
+.dashboard-info p strong {
+  color: #4CAF50;  /* เปลี่ยนสีของคำว่า "ยอดขายรวม" หรือหัวข้อข้อมูล */
+}
+
+.dashboard-graphs {
+  margin-top: 20px;
+}
+
+.dashboard-graphs h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.dashboard-graphs .graph {
+  margin-top: 20px;
+  width: 100%;
+  height: 400px;
+}

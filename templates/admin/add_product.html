@@ -1,0 +1,38 @@
+<div class="container mt-5">
+    <h2>เพิ่มสินค้า</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="name" class="form-label">ชื่อสินค้า</label>
+            {{ form.name }}
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">รายละเอียดสินค้า</label>
+            {{ form.description }}
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">หมวดหมู่</label>
+            {{ form.category }}
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">ราคา</label>
+            {{ form.price }}
+        </div>
+
+        <div class="mb-3">
+            <label for="stock" class="form-label">จำนวนสินค้า</label>
+            {{ form.stock }}
+        </div>
+
+        <div class="mb-3">
+            <label for="image_url" class="form-label">รูปสินค้า</label>
+            {{ form.image_url }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">บันทึกสินค้า</button>
+    </form>
+</div>
